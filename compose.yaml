@@ -1,0 +1,39 @@
+services:
+  db:
+    image: postgres:18-alpine
+    container_name: practice-debt-db
+    environment:
+      POSTGRES_DB: practicedebt
+      POSTGRES_USER: practicedebt
+      POSTGRES_PASSWORD: practicedebt
+    ports:
+      - "5432:5432"
+    volumes:
+      # Postgres 18 images want one mount at /var/lib/postgresql and place the cluster in a
+      # version-named subdirectory. Mounting .../data directly makes the container refuse to start.
+      - db-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U practicedebt -d practicedebt"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build: .
+    container_name: practice-debt
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/practicedebt
+      SPRING_DATASOURCE_USERNAME: practicedebt
+      SPRING_DATASOURCE_PASSWORD: practicedebt
+      # Optional. Without them the mirror cannot see private gym or group submissions.
+      CODEFORCES_APIKEY: ${CODEFORCES_APIKEY:-}
+      CODEFORCES_APISECRET: ${CODEFORCES_APISECRET:-}
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  db-data:

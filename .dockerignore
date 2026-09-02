@@ -1,0 +1,7 @@
+**/target/
+**/node_modules/
+**/dist/
+.git/
+# Never let credentials reach the build context.
+**/secrets.properties
+*.log
