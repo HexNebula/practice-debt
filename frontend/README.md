@@ -13,7 +13,5 @@ The backend must be running. The browser never talks to Codeforces directly — 
 from the local mirror, so the page stays fast and the API's rate limit is never a user-facing
 concern.
 
-The whole product is one list. There are no charts: tracking and visualisation are not the point,
-and earn their place only insofar as they make the queue trustworthy. What
-earns its place instead is the reason on every row, and the assumptions panel that says plainly
-which numbers are measured and which are guesses.
+The whole product is one list. There are no charts — what earns its place is the reason on every
+row, and the assumptions panel that says plainly which numbers are measured and which are guesses.
