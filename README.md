@@ -208,7 +208,7 @@ never appears as debt* is a property of that query, so that query is what the te
   cost is definitionally zero and it would sit at the bottom of the queue forever.
 
 To count virtual participation instead, add `ParticipantType.VIRTUAL` to that set and change this
-paragraph. Note that M2's rating cost has no meaning for a virtual attempt, so the ranking policy
+paragraph. Note that rating cost has no meaning for a virtual attempt, so the ranking policy
 would need revisiting too.
 
 An accepted submission in *any* mode — including virtual — still clears the debt. Only the failing
@@ -271,7 +271,7 @@ over the same field** — you at your real rank, and at the rank you would have 
 a bias afflicting both cancels. Every stored cost keeps `modelActualDelta` beside `actualDelta` so
 that assumption stays checkable rather than becoming folklore.
 
-### Verification (M2)
+### Verification
 
 Same handle, 29 abandoned items — 22 costed, 7 in unrated contests:
 
@@ -375,7 +375,7 @@ problems, which never carry tags) — all left unmapped rather than guessed at.
 
 Two flaws were caught by looking at the coverage table rather than by any test. A first attempt at a
 `prefix-sums` rule claimed 2,224 problems at an average rating of 1062 — that is not "prefix sums",
-it is "easy problems", and shipping it would have made M4 confidently wrong. And `prefix-sums` was
+it is "easy problems", and shipping it would have made decay confidently wrong. And `prefix-sums` was
 ordered after a broader fallback that ate everything it wanted, leaving it with zero. Both are fixed;
 both are the reason the coverage endpoint exists.
 
@@ -529,7 +529,7 @@ submissions across 2 problems to the anonymous API, and the missing ones were al
 and `435607`, both of which answer `Contest with id ... not found` when asked anonymously.
 
 This is a ceiling on what this tool can ever know. It does not affect abandoned debt, which concerns
-rated rounds that are public by construction. It matters a great deal for **decayed debt (M4)**: for
+rated rounds that are public by construction. It matters a great deal for **decayed debt**: for
 someone who practises mostly inside a private group, freshness would be inferred from a small
 fraction of their real activity and would be confidently wrong. Authenticating the client with a
 Codeforces API key (`apiKey`/`apiSig`) is the available fix and is not implemented.
@@ -592,8 +592,8 @@ recomputation (arithmetic). Anything whose answer is a fact rather than a predic
 Recorded here rather than settled quietly in code. Each needs an answer before the milestone that
 depends on it.
 
-- **Counterfactual solve time** (M2) — at what timestamp is the unsolved problem assumed to have
+- **Counterfactual solve time** — at what timestamp is the unsolved problem assumed to have
   been solved when recomputing rank? Affects both penalty and score.
-- **Cross-source ranking** (M5) — how an abandoned item ranks against a decayed technique. The spec
-  is explicit that there is no correct answer; the requirement is that the policy lives at one
-  named point in the code and is stated here.
+- **Cross-source ranking** — how an abandoned item ranks against a decayed technique. There is no
+  correct answer; what matters is that the policy lives at one named point in the code and is
+  stated here.

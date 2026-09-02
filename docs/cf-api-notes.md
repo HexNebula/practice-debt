@@ -56,8 +56,8 @@ Newest first. Accepts `handle`, `from` (1-based), `count`.
 
 `author.participantType` is the field the whole abandoned-debt feature rests on. Values:
 `CONTESTANT`, `PRACTICE`, `VIRTUAL`, `MANAGER`, `OUT_OF_COMPETITION`. Only `CONTESTANT` was
-observed in the sample pulled; the full set must be confirmed against the author's own history at
-M1 rather than assumed.
+observed in the sample pulled; the full set should be confirmed against a real history rather than
+assumed.
 
 `verdict` is **absent** while a submission is still being judged — nullable, not an enum.
 
@@ -77,7 +77,7 @@ Measured: contest 1985 (Div. 4) → **16,536 rows, 14.8 MB, ~3.3 s**. This is wh
 mirrored rather than fetched per request, and why they must never be fetched while a contest runs.
 
 `result.contest.type` is `CF`, `ICPC` or `IOI` and decides how the ranklist is scored — which
-decides how a counterfactual rank can be computed at M2. `rows[].problemResults[]` carries
+decides how a counterfactual rank can be computed. `rows[].problemResults[]` carries
 `points`, `rejectedAttemptCount` and `bestSubmissionTimeSeconds`, positionally aligned with
 `result.problems[]`.
 
