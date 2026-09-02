@@ -1,0 +1,395 @@
+# Practice Debt — technique taxonomy, version 1.
+#
+# WHY THIS FILE EXISTS
+#
+# Codeforces tags are too coarse to reason about forgetting. `dp` covers 2,526 problems in the
+# mirror and spans knapsack, tree DP, bitmask DP, digit DP and interval DP — someone can be sharp
+# at one and helpless at another, and a tool that says "your dp is stale" tells them nothing.
+#
+# Proof that tags cannot simply BE the mapping, taken from the mirror itself. These are all digit
+# DP problems, and no tag combination separates them from ordinary DP:
+#
+#     55D   Beautiful numbers            dp, number theory
+#     908G  New Year and Original Order  dp, math
+#     1036C Classy Numbers               combinatorics, dp
+#     1073E Segment Sum                  bitmasks, combinatorics, dp, math
+#
+# There is no `digit dp` tag and there never will be. Meanwhile "Digital Village" (2021E1-E3) is a
+# tree problem that any name-matching heuristic would happily misfile as digit DP. So: tags seed
+# the mapping, `pinned` carries the judgement calls, and `excluded` overrides the seeds.
+#
+# HOW MATCHING WORKS
+#
+# Techniques are evaluated top to bottom, most specific first. A problem is claimed by at most
+# `maxTechniquesPerProblem` techniques. `whenUnclaimed: true` marks a fallback that only takes a
+# problem no more specific technique wanted. `pinned` always wins; `excluded` always loses.
+#
+# EDITING THIS FILE
+#
+# It is data, not code, and it is meant to be argued with. Bump `version` when the meaning of a
+# technique changes, because staleness figures computed under an old taxonomy are not comparable
+# with new ones. Adding a pin is not a version bump.
+
+version: 1
+revised: "2026-09-01"
+maxTechniquesPerProblem: 3
+
+techniques:
+
+  # ---------------------------------------------------------------- dynamic programming
+
+  - id: digit-dp
+    name: Digit DP
+    family: dynamic programming
+    summary: >-
+      Counting numbers in a range by their decimal or binary digits, carrying a tight/loose flag.
+      Recognisable by constraints like 1 <= L <= R <= 10^18, where the answer counts values rather
+      than iterating them.
+    # No rule can find these. The set is hand-curated by construction.
+    pinned: [55D, 908G, 1036C, 1073E, 1245F, 1510D, 1926C]
+    excluded: [2021E1, 2021E2, 2021E3, 2242D]
+
+  - id: bitmask-dp
+    name: Bitmask DP
+    family: dynamic programming
+    summary: >-
+      State is a subset, usually of at most ~20 elements. Travelling-salesman shapes, assignment
+      problems, DP over profiles.
+    rules:
+      - allTags: [dp, bitmasks]
+
+  - id: tree-dp
+    name: Tree DP
+    family: dynamic programming
+    summary: >-
+      DP where the recursion follows a tree's structure, including rerooting to answer for every
+      vertex at once.
+    rules:
+      - allTags: [dp, trees]
+      - allTags: [dp, graphs, dfs and similar]
+        maxRating: 3500
+        noneTags: [shortest paths, flows]
+
+  - id: interval-dp
+    name: Interval DP
+    family: dynamic programming
+    summary: >-
+      State is a contiguous range, combined by splitting at an interior point. Matrix chain
+      multiplication, optimal triangulation, burst-balloon shapes.
+    pinned: [1132F, 1509C, 607B, 1114D, 1140D]
+
+  - id: expectation-dp
+    name: Probability and expectation DP
+    family: dynamic programming
+    summary: >-
+      Expected values and probabilities carried through a recurrence. Distinct from counting: the
+      arithmetic is over reals or modular inverses, and linearity of expectation does most of the
+      work.
+    rules:
+      - allTags: [dp, probabilities]
+
+  - id: knapsack
+    name: Knapsack and subset sums
+    family: dynamic programming
+    summary: >-
+      Choosing a subset under a capacity constraint. Includes bounded and unbounded variants, and
+      the bitset trick for pure feasibility.
+    rules:
+      - allTags: [dp]
+        anyTags: [greedy, brute force]
+        maxRating: 2200
+        noneTags: [trees, graphs, strings, probabilities, geometry]
+
+  - id: dp-optimization
+    name: DP optimisation
+    family: dynamic programming
+    summary: >-
+      Making a correct but too-slow recurrence fast: convex hull trick, divide-and-conquer
+      optimisation, Knuth, monotone queues, and matrix exponentiation of a linear recurrence.
+    rules:
+      - allTags: [dp, matrices]
+      - allTags: [dp, divide and conquer]
+      - allTags: [dp, data structures]
+        minRating: 2400
+
+  - id: linear-dp
+    name: Linear DP
+    family: dynamic programming
+    summary: >-
+      The base case of the family: DP over a sequence or a grid, states indexed by position. Longest
+      increasing subsequence, edit distance, path counting.
+    whenUnclaimed: true
+    rules:
+      - allTags: [dp]
+
+  # ---------------------------------------------------------------- graphs
+
+  - id: flows-and-matchings
+    name: Flows and matchings
+    family: graphs
+    summary: >-
+      Maximum flow, minimum cut, bipartite matching, and the modelling step of recognising a problem
+      as one of them.
+    rules:
+      - anyTags: [flows, graph matchings]
+
+  - id: graph-connectivity
+    name: Connectivity structure
+    family: graphs
+    summary: >-
+      Strongly connected components, bridges and articulation points, topological order on a DAG,
+      and 2-SAT built on top of them.
+    rules:
+      - anyTags: [2-sat]
+      - allTags: [graphs]
+        anyTags: [dfs and similar]
+        minRating: 2100
+        noneTags: [trees, dp, shortest paths]
+
+  - id: shortest-paths
+    name: Shortest paths
+    family: graphs
+    summary: >-
+      Dijkstra, 0-1 BFS, Bellman-Ford, Floyd-Warshall, and shortest paths on implicit or layered
+      graphs.
+    rules:
+      - anyTags: [shortest paths]
+
+  - id: disjoint-set-union
+    name: Disjoint set union
+    family: graphs
+    summary: >-
+      Union-find with path compression, including offline tricks: processing edges in sorted order,
+      small-to-large merging, DSU on a rollback stack.
+    rules:
+      - anyTags: [dsu]
+
+  - id: tree-structure
+    name: Tree structure queries
+    family: graphs
+    summary: >-
+      Answering questions about a fixed tree without DP: lowest common ancestor, binary lifting,
+      Euler tours flattening a tree into an array, heavy-light decomposition.
+    rules:
+      - allTags: [trees]
+        minRating: 1900
+        noneTags: [dp]
+
+  - id: graph-traversal
+    name: Graph traversal
+    family: graphs
+    summary: >-
+      BFS and DFS as tools: reachability, connected components, cycle detection, bipartite checking,
+      flood fill on grids.
+    whenUnclaimed: true
+    rules:
+      - anyTags: [graphs, dfs and similar, trees]
+
+  # ---------------------------------------------------------------- data structures
+
+  - id: sqrt-decomposition
+    name: Square-root decomposition
+    family: data structures
+    summary: >-
+      Trading update cost against query cost by working in blocks of about sqrt(n), and Mo's
+      algorithm for offline range queries.
+    pinned: [86D, 617E, 1000F, 375D, 940F]
+
+  - id: segment-tree-fenwick
+    name: Segment tree and Fenwick tree
+    family: data structures
+    summary: >-
+      Range queries with point or range updates: Fenwick trees, segment trees, lazy propagation,
+      merge-sort trees, and segment trees over value ranges.
+    rules:
+      - allTags: [data structures]
+        minRating: 1900
+        noneTags: [strings, geometry]
+
+  - id: prefix-sums
+    name: Prefix sums and difference arrays
+    family: data structures
+    summary: >-
+      Precomputing cumulative sums so a range query is O(1), difference arrays for range updates,
+      and the same idea in two dimensions.
+    # There is no prefix-sum tag, and the first attempt at a rule here claimed 2,224 problems at an
+    # average rating of 1062 - which is not "prefix sums", it is "easy problems". Narrowed to easy
+    # range-query problems only, and left to grow by pinning.
+    whenUnclaimed: true
+    rules:
+      - allTags: [data structures]
+        maxRating: 1400
+        noneTags: [strings, geometry, graphs, trees, dp, sortings]
+
+  - id: ordered-sets-and-heaps
+    name: Ordered sets and heaps
+    family: data structures
+    summary: >-
+      Keeping a changing collection queryable: priority queues, ordered sets and multisets,
+      sweeping with a running structure, the two-heaps median trick.
+    whenUnclaimed: true
+    rules:
+      - allTags: [data structures]
+      - allTags: [sortings, greedy]
+        minRating: 1600
+
+  # ---------------------------------------------------------------- searching
+
+  - id: binary-search-on-answer
+    name: Binary search on the answer
+    family: searching
+    summary: >-
+      Turning an optimisation problem into a decision problem that is monotone in the answer, then
+      bisecting it. Ternary search on unimodal functions belongs here too.
+    rules:
+      - anyTags: [binary search, ternary search]
+
+  - id: two-pointers
+    name: Two pointers and sliding windows
+    family: searching
+    summary: >-
+      Maintaining a window over a sequence whose endpoints only move forward, so a quadratic scan
+      collapses to linear.
+    rules:
+      - anyTags: [two pointers]
+
+  - id: brute-force-search
+    name: Exhaustive and pruned search
+    family: searching
+    summary: >-
+      Enumerating the whole space when it is small enough, and the techniques for when it nearly is:
+      meet in the middle, backtracking with pruning, recursive enumeration.
+    rules:
+      - anyTags: [meet-in-the-middle]
+      - allTags: [brute force]
+        minRating: 1800
+        noneTags: [dp, greedy]
+
+  # ---------------------------------------------------------------- reasoning
+
+  - id: game-theory
+    name: Game theory
+    family: reasoning
+    summary: >-
+      Two-player perfect-information games: winning and losing positions, Nim, Sprague-Grundy
+      values, and symmetry-strategy arguments.
+    rules:
+      - anyTags: [games]
+
+  - id: constructive-invariants
+    name: Constructive algorithms and invariants
+    family: reasoning
+    summary: >-
+      Building a witness rather than searching for one, and the invariant or parity argument that
+      proves no witness exists.
+    rules:
+      - anyTags: [constructive algorithms]
+
+  - id: greedy-and-exchange
+    name: Greedy and exchange arguments
+    family: reasoning
+    summary: >-
+      Committing to a locally best choice and being able to prove it safe, usually by an exchange
+      argument. Includes scheduling and sorting-then-sweeping.
+    whenUnclaimed: true
+    rules:
+      - anyTags: [greedy, sortings, schedules]
+
+  # ---------------------------------------------------------------- mathematics
+
+  - id: geometry
+    name: Computational geometry
+    family: mathematics
+    summary: >-
+      Points, lines and polygons: cross products and orientation, convex hulls, sweeps, and the
+      precision discipline that keeps them correct.
+    rules:
+      - anyTags: [geometry]
+
+  - id: number-theory
+    name: Number theory
+    family: mathematics
+    summary: >-
+      Divisibility, primes and sieves, modular arithmetic and inverses, the Chinese remainder
+      theorem, Euler's totient.
+    rules:
+      - anyTags: [number theory, chinese remainder theorem]
+
+  - id: combinatorics
+    name: Combinatorics and counting
+    family: mathematics
+    summary: >-
+      Counting without enumerating: binomial coefficients, inclusion-exclusion, Burnside, stars and
+      bars, and fast transforms when the counting becomes a convolution.
+    rules:
+      - anyTags: [combinatorics, fft]
+
+  - id: elementary-math
+    name: Elementary mathematics
+    family: mathematics
+    summary: >-
+      Arithmetic, algebraic rearrangement, parity, and the observation that collapses a problem to a
+      formula. The largest and least specific class; a signal here is weak.
+    whenUnclaimed: true
+    rules:
+      - anyTags: [math, matrices, probabilities]
+
+  # ---------------------------------------------------------------- strings
+
+  - id: string-matching-and-automata
+    name: String matching and automata
+    family: strings
+    summary: >-
+      Finding structure inside strings: KMP and prefix functions, Z-algorithm, tries and
+      Aho-Corasick, suffix arrays and automata.
+    rules:
+      - anyTags: [string suffix structures]
+      - allTags: [strings]
+        minRating: 2000
+        noneTags: [hashing]
+
+  - id: string-hashing
+    name: String hashing
+    family: strings
+    summary: >-
+      Polynomial hashing for O(1) substring comparison, and the collision reasoning that makes it
+      safe to rely on.
+    rules:
+      - anyTags: [hashing]
+
+  # ---------------------------------------------------------------- other
+
+  - id: bit-manipulation
+    name: Bit manipulation
+    family: other
+    summary: >-
+      Reasoning bit by bit outside a DP: XOR properties and basis, tries over bits, popcount
+      arguments, and per-bit independence.
+    rules:
+      - allTags: [bitmasks]
+        noneTags: [dp]
+
+  - id: implementation-and-simulation
+    name: Implementation and simulation
+    family: other
+    summary: >-
+      Problems whose difficulty is in writing the thing correctly rather than in finding the idea:
+      careful case analysis, simulating a described process, scanning and rebuilding strings,
+      getting the indexing right under time pressure. The least conceptual class, and a real skill
+      regardless.
+    # Absorbed the former `string-basics` class in v1. The two described the same thing — the work
+    # is in writing it carefully — and their populations agreed: 200 problems averaging 1111 rating
+    # against 627 averaging 1144. Harder string work still belongs to the string classes above,
+    # which are matched first.
+    whenUnclaimed: true
+    rules:
+      - anyTags: [implementation, strings, expression parsing]
+
+  - id: interactive
+    name: Interactive problems
+    family: other
+    summary: >-
+      Problems where queries are spent to learn the input, under a query budget: adaptive
+      guessing, binary search against a judge, flushing discipline.
+    rules:
+      - anyTags: [interactive, communication]
