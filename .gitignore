@@ -18,10 +18,7 @@ dist/
 .classpath
 .project
 
-# The working spec. Kept locally, deliberately not published.
-IMP.md
-
-# local — credentials live here, and must never be committed
+# credentials
 backend/secrets.properties
 secrets.properties
 
@@ -29,9 +26,3 @@ secrets.properties
 .env
 .env.local
 .DS_Store
-
-# scratch data dumps
-/scratch/
-
-# Personal notes, not part of the project.
-INTERVIEW.md
