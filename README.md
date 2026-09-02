@@ -313,8 +313,7 @@ carries a reason naming its source:
 
 ### Ranking policy
 
-The spec calls this the central unresolved design decision, and it is right that there is no correct
-answer. It lives at one named point, `QueuePolicy`.
+This is the one genuinely unresolved design decision, and there is no correct answer. It lives at one named point, `QueuePolicy`.
 
 The two sources cannot share a scale honestly. An abandoned item's cost is computed from real
 standings and a real rating formula; a decayed technique's urgency rests on a half-life this tool's
@@ -381,7 +380,7 @@ both are the reason the coverage endpoint exists.
 
 ### Why it stops at 33 rather than 30
 
-The spec asks for roughly 25–30 classes. v1 had 34; one merge brought it to 33, and the remaining
+The target was roughly 25–30 classes. v1 had 34; one merge brought it to 33, and the remaining
 four candidates were rejected on inspection.
 
 **Merged:** `string-basics` into `implementation-and-simulation`. Both meant the same thing — the
@@ -589,8 +588,7 @@ recomputation (arithmetic). Anything whose answer is a fact rather than a predic
 
 ## Open decisions
 
-Recorded here rather than settled quietly in code. Each needs an answer before the milestone that
-depends on it.
+Recorded here rather than settled quietly in code.
 
 - **Counterfactual solve time** — at what timestamp is the unsolved problem assumed to have
   been solved when recomputing rank? Affects both penalty and score.
