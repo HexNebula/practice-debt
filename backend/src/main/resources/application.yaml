@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: practice-debt
+  config:
+    # Credentials live outside the repository. Optional: absent means run unauthenticated.
+    import: "optional:file:./secrets.properties"
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/practicedebt
+    username: practicedebt
+    password: practicedebt
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: false
+
+server:
+  port: 8080
+
+codeforces:
+  base-url: https://codeforces.com/api
+  # Set these in secrets.properties (see secrets.properties.example), never here.
+  # Without them the client works exactly as before, but cannot see private gym or group
+  # submissions — Codeforces omits those from unauthenticated responses with no marker.
+  api-key: ""
+  api-secret: ""
+  # Codeforces rate-limits per IP and the limit is unofficial. One request per two
+  # seconds is the figure the API docs state; treat it as a hard floor, not a target.
+  min-request-interval: 2s
+  connect-timeout: 10s
+  # problemset.problems is ~2 MB and contest.standings can exceed 15 MB.
+  read-timeout: 120s
+  max-attempts: 4
+  retry-backoff: 2s
+  mirror:
+    # Refresh the problemset mirror on startup when the local copy is older than max-age.
+    refresh-on-startup: true
+    max-age: 12h
+    # Scheduled refresh cadence. CF adds problems only when contests finish.
+    refresh-interval: 6h
+
+logging:
+  level:
+    dev.practicedebt: DEBUG

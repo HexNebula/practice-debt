@@ -1,0 +1,34 @@
+# build
+target/
+build/
+*.class
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
+
+# node / frontend
+node_modules/
+dist/
+.vite/
+
+# ide
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# The working spec. Kept locally, deliberately not published.
+IMP.md
+
+# local — credentials live here, and must never be committed
+backend/secrets.properties
+secrets.properties
+
+*.log
+.env
+.env.local
+.DS_Store
+
+# scratch data dumps
+/scratch/
