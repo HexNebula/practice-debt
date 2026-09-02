@@ -32,3 +32,6 @@ secrets.properties
 
 # scratch data dumps
 /scratch/
+
+# Personal notes, not part of the project.
+INTERVIEW.md
